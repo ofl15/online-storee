@@ -1,5 +1,7 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import axios from 'axios'
+import { Link } from 'react-router-dom'
 
 const Register = () => {
 
@@ -8,7 +10,20 @@ const Register = () => {
     const [username , setUsername] = useState("")
     const [password , setPassword] = useState("")
     const [password2 , setPassword2] = useState("")
-    const navigate = useNavigate()
+    let navigate = useNavigate()
+
+
+    const register = event => {
+        event.preventDefault()
+       
+        if(password === password2) {
+            axios.post("http://localhost:1337/api/users", {username , email , password , confirmed: true, role: 1 })
+            .then(() => navigate('/'))
+            .catch(err => console.log(err, "------------------------------"))
+        } else {
+            throw Error('Password do not match')
+        }
+    }
 
 
 
@@ -19,7 +34,7 @@ const Register = () => {
                 <div className="column is-5">
                     <div className="box has-background-info-light">
                         <div className="title has-text-centered">Register</div>
-                        {/* <form className='form' onSubmit={event => register(event)}>
+                        <form className='form' onSubmit={event => register(event)}>
                             <div className="field">
                                 <input
                                     type="text"
@@ -71,7 +86,7 @@ const Register = () => {
                             <Link to='/login' className='button is-ghost'>
                                 Move to login page
                             </Link>
-                            </div> */}
+                            </div>
                     </div>
                 </div>
             </div>
